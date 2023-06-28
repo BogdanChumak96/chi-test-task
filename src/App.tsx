@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ChangeEvent } from "react";
 import { useGetCarsQuery } from "@store/api";
 import { FiSettings } from "react-icons/fi";
 import { ICar } from "@types";
@@ -18,7 +18,7 @@ function App() {
   const [debouncedSearchText, setDebouncedSearchText] = useState("");
   const [selectedCar, setSelectedCar] = useState(null);
 
-  const handleSearchChange = (e) => {
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
   };
 
