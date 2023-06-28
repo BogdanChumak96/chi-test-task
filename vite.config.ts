@@ -9,6 +9,8 @@ export default defineConfig({
       "@utils": "/src/utils",
       "@store": "/src/store",
       "@config": "/src/config",
+      "@types": "/src/types",
+      "@api": "store/api/*",
     },
   },
   plugins: [react()],

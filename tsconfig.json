@@ -19,12 +19,15 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
+
+    /* Alias paths */
     "baseUrl": "./src",
     "paths": {
       "@components/*": ["components/*"],
       "@utils/*": ["utils/*"],
       "@store/*": ["store/*"],
       "@config/*": ["config/*"],
+      "@types/*": ["types/*"],
       "@api/*": ["store/api/*"]
     }
   },
