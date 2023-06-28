@@ -7,12 +7,10 @@ import Loader from "@components/Loader";
 import ErrorLoading from "@components/ErrorLoading";
 
 function App() {
-  const {
-    data: { cars },
-    isLoading,
-    isError,
-    isSuccess,
-  } = useGetCarsQuery({}, {});
+  const { data, isLoading, isError, isSuccess, error } = useGetCarsQuery(
+    {},
+    {}
+  );
 
   const [searchText, setSearchText] = useState("");
   const [debouncedSearchText, setDebouncedSearchText] = useState("");
@@ -61,7 +59,7 @@ function App() {
     return <ErrorLoading />;
   }
 
-  const filteredCars = cars?.filter((car: ICar) => {
+  const filteredCars = data?.cars?.filter((car: ICar) => {
     const searchString = `${car.car} ${car.car_model} ${car.car_vin} ${
       car.car_color
     } ${car.car_model_year} ${car.price} ${
