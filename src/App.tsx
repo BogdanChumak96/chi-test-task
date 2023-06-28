@@ -61,7 +61,7 @@ function App() {
     return <ErrorLoading />;
   }
 
-  const filteredCars = cars.filter((car: ICar) => {
+  const filteredCars = cars?.filter((car: ICar) => {
     const searchString = `${car.car} ${car.car_model} ${car.car_vin} ${
       car.car_color
     } ${car.car_model_year} ${car.price} ${
