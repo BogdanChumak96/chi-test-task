@@ -44,6 +44,8 @@ function App() {
   }, [searchText]);
 
   const handleEdit = (car: ICar) => {
+    console.log(selectedCar);
+
     setSelectedCar(car);
   };
 
