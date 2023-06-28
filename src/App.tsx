@@ -7,8 +7,11 @@ import Loader from "@components/Loader";
 import ErrorLoading from "@components/ErrorLoading";
 
 function App() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const pageSize = 10;
   const { data, isLoading, isError, isSuccess } = useGetCarsQuery(
-    {},
+    { page: currentPage, pageSize },
     {}
   );
 
@@ -18,6 +21,7 @@ function App() {
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
+    setCurrentPage(1);
   };
 
   const debounce = <T extends (...args: any[]) => any>(
@@ -39,16 +43,32 @@ function App() {
       setDebouncedSearchText(searchText);
     }, 500);
     debouncedSearch();
+    setCurrentPage(1);
   }, [searchText]);
 
   const handleEdit = (car: ICar) => {
     console.log(selectedCar);
-
     setSelectedCar(car);
   };
 
   const handleDelete = (car: ICar) => {
     setSelectedCar(car);
+  };
+
+  useEffect(() => {
+    if (data?.totalCars) {
+      const pages = Math.ceil(data.totalCars / pageSize);
+      setTotalPages(pages);
+    }
+  }, [data, pageSize]);
+
+  const filteredCars = data?.cars?.filter((car: ICar) => {
+    const searchString = `${car.car} ${car.car_model} ${car.car_vin} ${car.car_color} ${car.car_model_year} ${car.price} ${car.availability ? "Available" : "Not Available"}`.toLowerCase();
+    return searchString.includes(debouncedSearchText.toLowerCase());
+  });
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
   };
 
   if (isLoading) {
@@ -58,15 +78,6 @@ function App() {
   if (isError) {
     return <ErrorLoading />;
   }
-
-  const filteredCars = data?.cars?.filter((car: ICar) => {
-    const searchString = `${car.car} ${car.car_model} ${car.car_vin} ${
-      car.car_color
-    } ${car.car_model_year} ${car.price} ${
-      car.availability ? "Available" : "Not Available"
-    }`.toLowerCase();
-    return searchString.includes(debouncedSearchText.toLowerCase());
-  });
 
   return (
     <div className="table-container">
