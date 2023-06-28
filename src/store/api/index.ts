@@ -4,10 +4,6 @@ const token ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6ImFzIiwicGFzc
 
 const baseQuery = fetchBaseQuery({
   baseUrl: "https://myfakeapi.com/api/",
-   prepareHeaders: (headers) => {
-     headers.set("Authorization", `Bearer ${token}`);
-     return headers;
-   },
 });
 
 export const carsApi = createApi({
