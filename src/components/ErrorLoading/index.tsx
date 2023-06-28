@@ -4,8 +4,8 @@ interface ErrorProps {
   message: string;
 }
 
-const ErrorLoading: React.FC<ErrorProps> = ({ message }) => {
-  return <div className="error">{message}</div>;
+const ErrorLoading: React.FC<ErrorProps> = () => {
+  return <div className="error">error</div>;
 };
 
 export default ErrorLoading;

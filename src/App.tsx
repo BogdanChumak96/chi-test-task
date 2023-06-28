@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ChangeEvent } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 import { useGetCarsQuery } from "@store/api";
 import { FiSettings } from "react-icons/fi";
 import { ICar } from "./types";
@@ -56,7 +56,7 @@ function App() {
   }
 
   if (isError) {
-    // return <ErrorLoading message={error.response?.data?.message} />;
+    return <ErrorLoading />;
   }
 
   const filteredCars = cars.filter((car: ICar) => {
