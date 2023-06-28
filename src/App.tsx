@@ -7,7 +7,7 @@ import Loader from "@components/Loader";
 import ErrorLoading from "@components/ErrorLoading";
 
 function App() {
-  const { data, isLoading, isError, isSuccess, error } = useGetCarsQuery(
+  const { data, isLoading, isError, isSuccess } = useGetCarsQuery(
     {},
     {}
   );
