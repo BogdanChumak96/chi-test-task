@@ -1,10 +1,6 @@
 import "./style.css";
 
-interface ErrorProps {
-  message: string;
-}
-
-const ErrorLoading: React.FC<ErrorProps> = () => {
+const ErrorLoading: React.FC = () => {
   return <div className="error">error</div>;
 };
 
