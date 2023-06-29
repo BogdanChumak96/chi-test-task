@@ -1,6 +1,5 @@
-import { ChangeEvent } from "react";
-import "./styles.css";
 import { ModalVariants } from "@utils/constants";
+import "./styles.css";
 
 interface IHeader {
   searchText: string;

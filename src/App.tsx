@@ -40,7 +40,6 @@ const App = () => {
 
   const isEditModalAction = modalAction === ModalVariants.EDIT;
   const isDeleteModalAction = modalAction === ModalVariants.DELETE;
-  const isAddModalAction = modalAction === ModalVariants.ADD;
 
   const handleOpenModal = (car: ICar, action: "edit" | "delete" | "add") => {
     setSelectedCar(car);
@@ -91,7 +90,7 @@ const App = () => {
   };
 
   const handleAddCar = (newCar: ICar) => {
-    const updatedCars = [...cars, newCar];
+    const updatedCars = [newCar, ...cars];
     setCars(updatedCars);
     handleCloseModal();
   };

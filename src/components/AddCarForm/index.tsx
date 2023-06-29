@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, useId } from "react";
 import "./styles.css";
 
 interface AddCarFormProps {
@@ -7,14 +7,14 @@ interface AddCarFormProps {
 }
 
 const AddCarForm: React.FC<AddCarFormProps> = ({ onClose, onSave }) => {
-  const [company, setCompany] = React.useState("");
-  const [model, setModel] = React.useState("");
-  const [vin, setVin] = React.useState("");
-  const [year, setYear] = React.useState(0);
-  const [color, setColor] = React.useState("");
+  const [car, setCompany] = React.useState("");
+  const [car_model, setModel] = React.useState("");
+  const [car_vin, setVin] = React.useState("");
+  const [car_model_year, setYear] = React.useState(0);
+  const [car_color, setColor] = React.useState("");
   const [price, setPrice] = React.useState(0);
   const [availability, setAvailability] = React.useState("");
-  console.log("Add new Car");
+  const id = useId();
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -49,12 +49,14 @@ const AddCarForm: React.FC<AddCarFormProps> = ({ onClose, onSave }) => {
 
   const handleSave = () => {
     onSave({
-      company,
-      model,
-      year,
-      color,
+      car,
+      car_model,
+      car_model_year,
+      car_color,
       price,
+      car_vin,
       availability,
+      id,
     });
     onClose();
   };
@@ -68,7 +70,7 @@ const AddCarForm: React.FC<AddCarFormProps> = ({ onClose, onSave }) => {
           <input
             type="text"
             name="company"
-            value={company}
+            value={car}
             onChange={handleInputChange}
           />
         </div>
@@ -77,7 +79,7 @@ const AddCarForm: React.FC<AddCarFormProps> = ({ onClose, onSave }) => {
           <input
             type="text"
             name="model"
-            value={model}
+            value={car_model}
             onChange={handleInputChange}
           />
         </div>
@@ -86,7 +88,7 @@ const AddCarForm: React.FC<AddCarFormProps> = ({ onClose, onSave }) => {
           <input
             type="text"
             name="vin"
-            value={vin}
+            value={car_vin}
             onChange={handleInputChange}
           />
         </div>
@@ -95,7 +97,7 @@ const AddCarForm: React.FC<AddCarFormProps> = ({ onClose, onSave }) => {
           <input
             type="number"
             name="year"
-            value={year}
+            value={car_model_year}
             onChange={handleInputChange}
           />
         </div>
@@ -104,7 +106,7 @@ const AddCarForm: React.FC<AddCarFormProps> = ({ onClose, onSave }) => {
           <input
             type="text"
             name="color"
-            value={color}
+            value={car_color}
             onChange={handleInputChange}
           />
         </div>
