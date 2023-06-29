@@ -53,8 +53,8 @@ const EditCarForm: React.FC<IEditProps> = ({
   };
 
   const handleAvailabilityChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value;
-    setAvailability(value === "true");
+    const value = e.target.value === "true";
+    setAvailability(value);
   };
 
   return (
@@ -118,7 +118,7 @@ const EditCarForm: React.FC<IEditProps> = ({
           <label>Availability</label>
           <select
             name="availability"
-            value={availability ? "Available" : "Not Available"}
+            value={availability ? "true" : "false"}
             onChange={handleAvailabilityChange}
           >
             <option value="true">Available</option>

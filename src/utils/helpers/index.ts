@@ -1,7 +1,14 @@
 import { ICar } from "./../../types/index";
 
-export const filterCars = (cars: ICar[], searchText: string) => {
-  const filteredCars = cars?.filter((car: ICar) => {
+export const filterCars = (
+  cars: ICar[] | undefined,
+  searchText: string | undefined
+) => {
+  if (typeof cars === "undefined" || typeof searchText === "undefined") {
+    return [];
+  }
+
+  const filteredCars = cars.filter((car: ICar) => {
     const searchString = `${car.car} ${car.car_model} ${car.car_vin} ${
       car.car_color
     } ${car.car_model_year} ${car.price} ${

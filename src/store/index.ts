@@ -1,5 +1,5 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import carsReducer from "./carSlice/carSlice";
+import carsReducer from "./carSlice";
 import { carsApi } from "./api";
 import storage from "redux-persist/lib/storage";
 

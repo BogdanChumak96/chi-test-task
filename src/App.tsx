@@ -1,4 +1,4 @@
-import { useState, useEffect, ChangeEvent } from "react";
+import { useEffect, ChangeEvent } from "react";
 import { useGetCarsQuery } from "@store/api";
 import { ICar } from "./types";
 import "./App.css";
@@ -16,104 +16,127 @@ import {
   AddCarForm,
 } from "./components";
 import { ModalVariants } from "@utils/constants";
+import { useAppDispatch, useAppSelector } from "@utils/hooks";
+import {
+  carsSelectors,
+  setCurrentPage,
+  setOpenModal,
+  setCars,
+  setSelectedCar,
+  setModalAction,
+  setColor,
+  setPrice,
+  setAvailability,
+  setSearchText,
+  setDebouncedSearchText,
+} from "@store/carSlice";
 
 const App = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [openModal, setOpenModal] = useState(false);
-  const [selectedCar, setSelectedCar] = useState<ICar | null>(null);
-  const [modalAction, setModalAction] = useState<
-    "edit" | "delete" | "add" | null
-  >(null);
-  const [color, setColor] = useState("");
-  const [price, setPrice] = useState("");
-  const [availability, setAvailability] = useState(false);
-  const [searchText, setSearchText] = useState("");
-  const [debouncedSearchText, setDebouncedSearchText] = useState("");
-  const [cars, setCars] = useState<ICar[]>([]);
+  const dispatch = useAppDispatch();
+  const currentPage = useAppSelector(carsSelectors.selectCurrentPage);
+  const selectOpenModal = useAppSelector(carsSelectors.selectOpenModal);
+  const selectAllCars = useAppSelector(carsSelectors.selectAllCars);
+  const selectSelectedCar = useAppSelector(carsSelectors.selectSelectedCar);
+  const selectModalAction = useAppSelector(carsSelectors.selectModalAction);
+  const selectColor = useAppSelector(carsSelectors.selectColor);
+  const selectPrice = useAppSelector(carsSelectors.selectPrice);
+  const selectAvailability = useAppSelector(carsSelectors.selectAvailability);
+  const selectSearchText = useAppSelector(carsSelectors.selectSearchText);
+  const selectDebouncedSearchText = useAppSelector(
+    carsSelectors.selectDebouncedSearchText
+  );
+  console.log(selectAvailability);
 
-  const { data, isLoading, isError, isSuccess } = useGetCarsQuery({}, {});
+  const { data, isLoading, isError, isSuccess } = useGetCarsQuery(
+    {},
+    { refetchOnMountOrArgChange: false }
+  );
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchText(e.target.value);
-    setCurrentPage(1);
+    dispatch(setSearchText(e.target.value));
+    dispatch(setCurrentPage(1));
   };
 
-  const isEditModalAction = modalAction === ModalVariants.EDIT;
-  const isDeleteModalAction = modalAction === ModalVariants.DELETE;
+  const isEditModalAction = selectModalAction === ModalVariants.EDIT;
+  const isDeleteModalAction = selectModalAction === ModalVariants.DELETE;
 
   const handleOpenModal = (car: ICar, action: "edit" | "delete" | "add") => {
-    setSelectedCar(car);
-    setOpenModal(true);
-    setModalAction(action);
+    dispatch(setSelectedCar(car));
+    dispatch(setOpenModal(true));
+    dispatch(setModalAction(action));
   };
 
   const handleCloseModal = () => {
-    setOpenModal(false);
-    setSelectedCar(null);
-    setModalAction(null);
+    dispatch(setOpenModal(false));
+    dispatch(setSelectedCar(null));
+    dispatch(setModalAction(null));
   };
 
   const handleColorUpdate = (color: string) => {
-    setColor(color);
+    dispatch(setColor(color));
   };
 
   const handlePriceUpdate = (newPrice: string) => {
-    setPrice(newPrice);
+    dispatch(setPrice(newPrice));
   };
 
   const handleAvailabilityUpdate = (availability: boolean) => {
-    setAvailability(availability);
+    dispatch(setAvailability(availability));
   };
 
   const handleSaveCar = () => {
-    if (selectedCar) {
+    if (selectSelectedCar) {
       const updatedCar: ICar = {
-        ...selectedCar,
-        car_color: color,
-        price: price,
-        availability: availability,
+        ...selectSelectedCar,
+        car_color: selectColor,
+        price: selectPrice,
+        availability: selectAvailability,
       };
+      console.log(updatedCar);
 
-      const updatedCars = cars.map((car: ICar) =>
+      const updatedCars = selectAllCars.map((car: ICar) =>
         car.id === updatedCar.id ? updatedCar : car
       );
 
-      setCars(updatedCars);
+      dispatch(setCars(updatedCars));
+      // dispatch(setColor(""));
+      // dispatch(setPrice(""));
+      // dispatch(setAvailability(""));
       handleCloseModal();
     }
   };
 
   const handleDeleteCar = (car: ICar) => {
-    const updatedCars = cars.filter((c: ICar) => c.id !== car.id);
-    setCars(updatedCars);
+    const updatedCars = selectAllCars.filter((c: ICar) => c.id !== car.id);
+    dispatch(setCars(updatedCars));
     handleCloseModal();
   };
 
   const handleAddCar = (newCar: ICar) => {
-    const updatedCars = [newCar, ...cars];
+    const updatedCars = [newCar, ...selectAllCars];
     setCars(updatedCars);
     handleCloseModal();
   };
 
   useEffect(() => {
     const debouncedSearch = debounce(() => {
-      setDebouncedSearchText(searchText);
+      dispatch(setDebouncedSearchText(selectSearchText));
     }, 500);
     debouncedSearch();
-    setCurrentPage(1);
-  }, [searchText]);
+    dispatch(setCurrentPage(1));
+  }, [selectSearchText, dispatch]);
 
   useEffect(() => {
     if (isSuccess) {
-      setCars(data?.cars || []);
+      dispatch(setCars(data?.cars || []));
     }
-  }, [isSuccess, data?.cars]);
+  }, [isSuccess, data?.cars, dispatch]);
 
-  const filteredCars = filterCars(cars, debouncedSearchText);
+  const filteredCars = filterCars(selectAllCars, selectDebouncedSearchText);
   const totalPages = 10;
 
   const handlePageChange = (page: number) => {
-    setCurrentPage(page);
+    dispatch(setCurrentPage(page));
   };
 
   if (isLoading) {
@@ -127,28 +150,28 @@ const App = () => {
   return (
     <div className="table-container">
       <Header
-        searchText={searchText}
+        searchText={selectSearchText}
         handleSearchChange={handleSearchChange}
         handleOpenModal={handleOpenModal}
       />
-      <Modal open={openModal} onClose={handleCloseModal}>
-        {isEditModalAction && selectedCar ? (
+      <Modal open={selectOpenModal} onClose={handleCloseModal}>
+        {isEditModalAction && selectSelectedCar ? (
           <EditCarForm
-            color={color}
-            price={price}
-            availability={availability}
-            car={selectedCar}
+            color={selectColor}
+            price={selectPrice}
+            availability={selectAvailability}
+            car={selectSelectedCar}
             onClose={handleCloseModal}
             onSave={handleSaveCar}
             setColor={handleColorUpdate}
             setPrice={handlePriceUpdate}
             setAvailability={handleAvailabilityUpdate}
           />
-        ) : isDeleteModalAction && selectedCar ? (
+        ) : isDeleteModalAction && selectSelectedCar ? (
           <DeleteCarForm
-            car={selectedCar}
+            car={selectSelectedCar}
             onClose={handleCloseModal}
-            onDelete={() => handleDeleteCar(selectedCar)}
+            onDelete={() => handleDeleteCar(selectSelectedCar)}
           />
         ) : (
           <AddCarForm onClose={handleCloseModal} onSave={handleAddCar} />
