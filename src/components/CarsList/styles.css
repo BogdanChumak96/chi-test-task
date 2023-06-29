@@ -1,0 +1,42 @@
+.action-button {
+  margin-right: 5px;
+}
+
+.action-button {
+  /* Your existing styles for the action buttons */
+}
+
+.action-button:hover {
+  cursor: pointer;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 120px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content button {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  text-align: left;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+.dropdown-content button:hover {
+  background: rgba(0, 0, 0, 0.2);
+}

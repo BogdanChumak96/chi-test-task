@@ -1,41 +1,99 @@
 import { useState, useEffect, ChangeEvent } from "react";
 import { useGetCarsQuery } from "@store/api";
-import { FiSettings } from "react-icons/fi";
 import { ICar } from "./types";
 import "./App.css";
-import Loader from "@components/Loader";
-import ErrorLoading from "@components/ErrorLoading";
+import { debounce, filterCars } from "@utils/helpers";
+import {
+  EditCarForm,
+  CarsList,
+  DeleteCarForm,
+  Modal,
+  ErrorLoading,
+  Loader,
+  TableHeader,
+  Header,
+  Pagination,
+  AddCarForm,
+} from "./components";
+import { ModalVariants } from "@utils/constants";
 
-function App() {
+const App = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
-  const pageSize = 10;
-  const { data, isLoading, isError, isSuccess } = useGetCarsQuery(
-    { page: currentPage, pageSize },
-    {}
-  );
-
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedCar, setSelectedCar] = useState<ICar | null>(null);
+  const [modalAction, setModalAction] = useState<
+    "edit" | "delete" | "add" | null
+  >(null);
+  const [color, setColor] = useState("");
+  const [price, setPrice] = useState("");
+  const [availability, setAvailability] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [debouncedSearchText, setDebouncedSearchText] = useState("");
-  const [selectedCar, setSelectedCar] = useState<null | ICar>(null);
+  const [cars, setCars] = useState<ICar[]>([]);
+
+  const { data, isLoading, isError, isSuccess } = useGetCarsQuery({}, {});
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
     setCurrentPage(1);
   };
 
-  const debounce = <T extends (...args: any[]) => any>(
-    func: T,
-    delay: number
-  ): ((...args: Parameters<T>) => void) => {
-    let timer: ReturnType<typeof setTimeout>;
+  const isEditModalAction = modalAction === ModalVariants.EDIT;
+  const isDeleteModalAction = modalAction === ModalVariants.DELETE;
+  const isAddModalAction = modalAction === ModalVariants.ADD;
 
-    return function (this: unknown, ...args: Parameters<T>) {
-      clearTimeout(timer);
-      timer = setTimeout(() => {
-        func.apply(this, args);
-      }, delay);
-    };
+  const handleOpenModal = (car: ICar, action: "edit" | "delete" | "add") => {
+    setSelectedCar(car);
+    setOpenModal(true);
+    setModalAction(action);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    setSelectedCar(null);
+    setModalAction(null);
+  };
+
+  const handleColorUpdate = (color: string) => {
+    setColor(color);
+  };
+
+  const handlePriceUpdate = (newPrice: string) => {
+    setPrice(newPrice);
+  };
+
+  const handleAvailabilityUpdate = (availability: boolean) => {
+    setAvailability(availability);
+  };
+
+  const handleSaveCar = () => {
+    if (selectedCar) {
+      const updatedCar: ICar = {
+        ...selectedCar,
+        car_color: color,
+        price: price,
+        availability: availability,
+      };
+
+      const updatedCars = cars.map((car: ICar) =>
+        car.id === updatedCar.id ? updatedCar : car
+      );
+
+      setCars(updatedCars);
+      handleCloseModal();
+    }
+  };
+
+  const handleDeleteCar = (car: ICar) => {
+    const updatedCars = cars.filter((c: ICar) => c.id !== car.id);
+    setCars(updatedCars);
+    handleCloseModal();
+  };
+
+  const handleAddCar = (newCar: ICar) => {
+    const updatedCars = [...cars, newCar];
+    setCars(updatedCars);
+    handleCloseModal();
   };
 
   useEffect(() => {
@@ -46,26 +104,14 @@ function App() {
     setCurrentPage(1);
   }, [searchText]);
 
-  const handleEdit = (car: ICar) => {
-    console.log(selectedCar);
-    setSelectedCar(car);
-  };
-
-  const handleDelete = (car: ICar) => {
-    setSelectedCar(car);
-  };
-
   useEffect(() => {
-    if (data?.totalCars) {
-      const pages = Math.ceil(data.totalCars / pageSize);
-      setTotalPages(pages);
+    if (isSuccess) {
+      setCars(data?.cars || []);
     }
-  }, [data, pageSize]);
+  }, [isSuccess, data?.cars]);
 
-  const filteredCars = data?.cars?.filter((car: ICar) => {
-    const searchString = `${car.car} ${car.car_model} ${car.car_vin} ${car.car_color} ${car.car_model_year} ${car.price} ${car.availability ? "Available" : "Not Available"}`.toLowerCase();
-    return searchString.includes(debouncedSearchText.toLowerCase());
-  });
+  const filteredCars = filterCars(cars, debouncedSearchText);
+  const totalPages = 10;
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -81,56 +127,49 @@ function App() {
 
   return (
     <div className="table-container">
-      <div className="search-container">
-        <input
-          type="text"
-          placeholder="Search..."
-          value={searchText}
-          onChange={handleSearchChange}
-          className="search-input"
-        />
-      </div>
+      <Header
+        searchText={searchText}
+        handleSearchChange={handleSearchChange}
+        handleOpenModal={handleOpenModal}
+      />
+      <Modal open={openModal} onClose={handleCloseModal}>
+        {isEditModalAction && selectedCar ? (
+          <EditCarForm
+            color={color}
+            price={price}
+            availability={availability}
+            car={selectedCar}
+            onClose={handleCloseModal}
+            onSave={handleSaveCar}
+            setColor={handleColorUpdate}
+            setPrice={handlePriceUpdate}
+            setAvailability={handleAvailabilityUpdate}
+          />
+        ) : isDeleteModalAction && selectedCar ? (
+          <DeleteCarForm
+            car={selectedCar}
+            onClose={handleCloseModal}
+            onDelete={() => handleDeleteCar(selectedCar)}
+          />
+        ) : (
+          <AddCarForm onClose={handleCloseModal} onSave={handleAddCar} />
+        )}
+      </Modal>
       <table>
-        <thead>
-          <tr>
-            <th>Company</th>
-            <th>Model</th>
-            <th>VIN</th>
-            <th>Color</th>
-            <th>Year</th>
-            <th>Price</th>
-            <th>Availability</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
+        <TableHeader />
         <tbody>
-          {isSuccess &&
-            filteredCars.map((car: ICar) => (
-              <tr key={car.id}>
-                <td>{car.car}</td>
-                <td>{car.car_model}</td>
-                <td>{car.car_vin}</td>
-                <td>{car.car_color}</td>
-                <td>{car.car_model_year}</td>
-                <td>{car.price}</td>
-                <td>{car.availability ? "Available" : "Not Available"}</td>
-                <td>
-                  <div className="dropdown">
-                    <div className="action-button">
-                      <FiSettings />
-                    </div>
-                    <div className="dropdown-content">
-                      <button onClick={() => handleEdit(car)}>Edit</button>
-                      <button onClick={() => handleDelete(car)}>Delete</button>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            ))}
+          {isSuccess && (
+            <CarsList cars={filteredCars} handleOpenModal={handleOpenModal} />
+          )}
         </tbody>
       </table>
+      <Pagination
+        currentPage={currentPage}
+        handlePageChange={handlePageChange}
+        totalPages={totalPages}
+      />
     </div>
   );
-}
+};
 
 export default App;

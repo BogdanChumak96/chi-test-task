@@ -1,0 +1,55 @@
+.add-car-form {
+  width: 300px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 4px;
+}
+
+.add-car-form h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.add-car-form .form {
+  margin-bottom: 20px;
+}
+
+.add-car-form .form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.add-car-form .form input,
+.add-car-form .form select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.add-car-form .buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.add-car-form .buttons button {
+  margin-left: 10px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.add-car-form .buttons .save-button {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.add-car-form .buttons .cancel-button {
+  background-color: #ccc;
+  color: #333;
+}

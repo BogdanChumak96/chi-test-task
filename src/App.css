@@ -1,11 +1,24 @@
 /* App.css или другой файл стилей */
-
+.search-bar {
+  display: flex;
+  gap: 20px;
+  width: 70%;
+  margin: 0 auto;
+  margin-bottom: 10px;
+}
 .search-input {
   width: 100%;
   padding: 8px;
   font-size: 14px;
   border: 1px solid #ccc;
   border-radius: 4px;
+}
+.add-new {
+  width: 120px;
+  padding: 4px;
+  border-radius: 10px;
+  background: white;
+  cursor: pointer;
 }
 
 .table-container {
@@ -23,7 +36,6 @@
   padding: 10px;
   border: 1px solid #ddd;
 }
-
 
 .table-container th {
   background-color: #f2f2f2;
@@ -53,7 +65,6 @@
 .dropdown {
   position: relative;
   display: inline-block;
-  
 }
 
 .dropdown-content {

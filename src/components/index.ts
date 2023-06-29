@@ -1,1 +1,11 @@
 export { default as ErrorBoundary } from "./ErrorBoundary";
+export { default as CarsList } from "./CarsList";
+export { default as AddCarForm } from "./AddCarForm";
+export { default as EditCarForm } from "./EditCarForm";
+export { default as DeleteCarForm } from "./DeleteCarForm";
+export { default as Pagination } from "./Pagination";
+export { default as TableHeader } from "./TableHeader";
+export { default as Header } from "./Header";
+export { default as ErrorLoading } from "./ErrorLoading";
+export { default as Loader } from "./Loader";
+export { default as Modal } from "./Modal";

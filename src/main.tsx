@@ -5,6 +5,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { ErrorBoundary } from "@components/index.ts";
 import store, { persistor } from "@store/index.ts";
 import "./index.css";
+import EditCarForm from "@components/EditСarForm/index.tsx";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <Provider store={store}>
