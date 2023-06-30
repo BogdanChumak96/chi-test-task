@@ -1,3 +1,4 @@
+import { IsAble } from "@utils/constants";
 import { ICar } from "./../../types/index";
 
 export const filterCars = (
@@ -8,11 +9,15 @@ export const filterCars = (
     return [];
   }
 
+  if (searchText.trim() === "") {
+    return cars;
+  }
+
   const filteredCars = cars.filter((car: ICar) => {
     const searchString = `${car.car} ${car.car_model} ${car.car_vin} ${
       car.car_color
     } ${car.car_model_year} ${car.price} ${
-      car.availability ? "Available" : "Not Available"
+      car.availability ? "AVAILABLE" : "NOTAVAILABLE"
     }`.toLowerCase();
     return searchString.includes(searchText.toLowerCase());
   });

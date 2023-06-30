@@ -1,4 +1,3 @@
-/* App.css или другой файл стилей */
 .search-bar {
   display: flex;
   gap: 20px;
@@ -22,7 +21,8 @@
 }
 
 .table-container {
-  margin: 20px;
+  padding: 10px;
+  margin: 30px;
   overflow-x: auto;
 }
 
@@ -91,6 +91,15 @@
 }
 .dropdown-content button:hover {
   background: rgba(0, 0, 0, 0.2);
+}
+
+.pagination-container {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #fff;
+  padding: 20px;
 }
 
 .pagination {

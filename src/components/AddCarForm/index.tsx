@@ -1,10 +1,7 @@
 import React, { ChangeEvent, useId } from "react";
 import "./styles.css";
-
-interface AddCarFormProps {
-  onClose: () => void;
-  onSave: (car: any) => void;
-}
+import { IsAble } from "@utils/constants";
+import { AddCarFormProps } from "../../types";
 
 const AddCarForm: React.FC<AddCarFormProps> = ({ onClose, onSave }) => {
   const [car, setCompany] = React.useState("");
@@ -126,8 +123,8 @@ const AddCarForm: React.FC<AddCarFormProps> = ({ onClose, onSave }) => {
             value={availability}
             onChange={handleInputChange}
           >
-            <option value="true">Available</option>
-            <option value="false">Not Available</option>
+            <option value="true">{IsAble.AVAILABLE}</option>
+            <option value="false">{IsAble.NOTAVAILABLE}</option>
           </select>
         </div>
       </div>

@@ -1,11 +1,6 @@
 import { ModalVariants } from "@utils/constants";
+import { IHeader } from "../../types";
 import "./styles.css";
-
-interface IHeader {
-  searchText: string;
-  handleSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleOpenModal: (car: any, action: "add") => void;
-}
 
 const Header: React.FC<IHeader> = ({
   searchText,

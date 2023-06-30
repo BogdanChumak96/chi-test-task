@@ -1,29 +1,7 @@
 import { ChangeEvent } from "react";
 import "./styles.css";
-
-interface ICar {
-  id: string;
-  car: string;
-  car_model: string;
-  company: string;
-  car_vin: string;
-  car_model_year: number;
-  car_color: string;
-  price: string | number;
-  availability: boolean;
-}
-
-interface IEditProps {
-  car: ICar;
-  color: string;
-  price: string;
-  availability: boolean;
-  onClose: () => void;
-  onSave: () => void;
-  setColor: (color: string) => void;
-  setPrice: (string: string) => void;
-  setAvailability: (availability: boolean) => void;
-}
+import { IEditProps } from "../../types";
+import { IsAble } from "@utils/constants";
 
 const EditCarForm: React.FC<IEditProps> = ({
   car,
@@ -42,6 +20,8 @@ const EditCarForm: React.FC<IEditProps> = ({
       colorValue.charAt(0).toUpperCase() + colorValue.slice(1);
     setColor(capitalizedColor);
   };
+
+  const isAvailability = availability ? "true" : "false";
 
   const handlePriceChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -118,11 +98,11 @@ const EditCarForm: React.FC<IEditProps> = ({
           <label>Availability</label>
           <select
             name="availability"
-            value={availability ? "true" : "false"}
+            value={isAvailability}
             onChange={handleAvailabilityChange}
           >
-            <option value="true">Available</option>
-            <option value="false">Not Available</option>
+            <option value="true">{IsAble.AVAILABLE}</option>
+            <option value="false">{IsAble.NOTAVAILABLE}</option>
           </select>
         </div>
       </div>

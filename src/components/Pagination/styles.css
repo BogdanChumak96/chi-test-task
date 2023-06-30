@@ -17,3 +17,19 @@
   background-color: #333;
   color: #fff;
 }
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+button.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

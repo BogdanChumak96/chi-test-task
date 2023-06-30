@@ -1,4 +1,4 @@
-const TableHeader = () => {
+const TableHeader: React.FC = () => {
   return (
     <thead>
       <tr>

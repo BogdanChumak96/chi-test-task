@@ -17,6 +17,7 @@ import {
 const persistConfig = {
   key: "root",
   storage,
+  whiteList: ["cars"],
 };
 
 export const rootReducer = combineReducers({

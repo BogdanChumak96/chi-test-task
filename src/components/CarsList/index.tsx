@@ -1,12 +1,13 @@
 import CarItem from "@components/CarItem";
-import { ICar } from "../../types/index";
+import { ICar, ICarList } from "../../types/index";
+import "./styles.css";
+import NoResults from "@components/NoResults";
 
-interface Props {
-  cars: ICar[];
-  handleOpenModal: (car: ICar, action: "edit" | "delete") => void;
-}
+const CarsList: React.FC<ICarList> = ({ cars, handleOpenModal }) => {
+  if (cars.length === 0) {
+    return <NoResults />;
+  }
 
-const CarsList: React.FC<Props> = ({ cars, handleOpenModal }) => {
   return (
     <>
       {cars.map((car: ICar) => (

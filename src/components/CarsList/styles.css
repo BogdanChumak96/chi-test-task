@@ -40,3 +40,9 @@
 .dropdown-content button:hover {
   background: rgba(0, 0, 0, 0.2);
 }
+
+.empty-message {
+  background: rgb(14, 196, 114);
+  font-size: 34px;
+  margin: 40px auto;
+}

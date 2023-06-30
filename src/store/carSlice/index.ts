@@ -15,6 +15,7 @@ export interface carsState {
   availability: boolean;
   searchText: string;
   debouncedSearchText: string;
+  pageSize: number;
 }
 
 const initialState: carsState = {
@@ -29,6 +30,7 @@ const initialState: carsState = {
   availability: false,
   searchText: "",
   debouncedSearchText: "",
+  pageSize: 17,
 };
 
 export const carsSlice = createSlice({
@@ -96,6 +98,7 @@ export const selectAvailability = (state: RootState) => state.cars.availability;
 export const selectSearchText = (state: RootState) => state.cars.searchText;
 export const selectDebouncedSearchText = (state: RootState) =>
   state.cars.debouncedSearchText;
+export const selectPageSize = (state: RootState) => state.cars.pageSize;
 
 export const carsSelectors = {
   selectCurrentPage,
@@ -109,6 +112,7 @@ export const carsSelectors = {
   selectAvailability,
   selectSearchText,
   selectDebouncedSearchText,
+  selectPageSize,
 };
 
 export default carsSlice.reducer;
