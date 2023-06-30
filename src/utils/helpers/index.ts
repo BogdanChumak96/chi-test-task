@@ -1,4 +1,3 @@
-import { IsAble } from "@utils/constants";
 import { ICar } from "./../../types/index";
 
 export const filterCars = (
