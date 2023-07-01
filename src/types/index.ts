@@ -26,13 +26,13 @@ export interface ICar {
   car_color: string;
   price: number | string;
   availability: boolean;
-  setCompany: (company: string) => void;
-  setModel: (model: string) => void;
-  setVin: (vin: string) => void;
-  setYear: (year: number) => void;
-  setColor: (color: string) => void;
-  setPrice: (price: number | string) => void;
-  setAvailability: (availability: boolean) => void;
+  setCompany?: (company: string) => void;
+  setModel?: (model: string) => void;
+  setVin?: (vin: string) => void;
+  setYear?: (year: number) => void;
+  setColor?: (color: string) => void;
+  setPrice?: (price: number | string) => void;
+  setAvailability?: (availability: boolean) => void;
 }
 
 export interface ICarItem {

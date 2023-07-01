@@ -13,15 +13,15 @@ export const filterCars = (
   }
 
   const filteredCars = cars.filter((car: ICar) => {
-    const searchString = `${car.car} ${car.car_model} ${car.car_vin} ${
-      car.car_color
-    } ${car.car_model_year} ${car.price} ${
-      car.availability ? "AVAILABLE" : "NOTAVAILABLE"
-    }`.toLowerCase();
-    return searchString.includes(searchText.toLowerCase());
+    const searchString = `${car.car} ${car.car_model} ${car.car_vin} ${car.car_color} ${car.car_model_year} ${car.price}`;
+    const availabilityString = car.availability ? "AVAILABLE" : "NOT AVAILABLE";
+    return (
+      searchString.toLowerCase().includes(searchText.toLowerCase()) ||
+      availabilityString.toLowerCase().includes(searchText.toLowerCase())
+    );
   });
 
-  return filteredCars;
+  return filteredCars || [];
 };
 
 export const debounce = <T extends (...args: any[]) => any>(
