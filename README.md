@@ -14,7 +14,7 @@ All user actions, including editing, deleting, and adding cars, affect the table
 
 ## Technologies Used
 
-The Car List Application can be implemented using either Vanilla JavaScript or the React framework.
+The car list application is implemented using the React framework.
 
 ## Installation
 
