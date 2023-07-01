@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent, useState } from "react";
 import "./styles.css";
 import { IEditProps } from "../../types";
 import { IsAble } from "@utils/constants";
@@ -14,27 +14,56 @@ const EditCarForm: React.FC<IEditProps> = ({
   availability,
   price,
 }) => {
-  const handleColorChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const colorValue = e.target.value;
-    const capitalizedColor =
-      colorValue.charAt(0).toUpperCase() + colorValue.slice(1);
-    setColor(capitalizedColor);
-  };
+  const [colorError, setColorError] = useState(false);
+  const [priceError, setPriceError] = useState(false);
 
+  const handleColorChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const colorValue = e.target.value.trim();
+  
+    if (colorValue === "") {
+      setColor("");
+      setColorError(false);
+    } else {
+      const onlyLettersRegex = /^[a-zA-Z]+$/;
+      const isValidColor = onlyLettersRegex.test(colorValue);
+  
+      if (isValidColor) {
+        const capitalizedColor = colorValue.charAt(0).toUpperCase() + colorValue.slice(1);
+        setColor(capitalizedColor);
+        setColorError(false);
+      } else {
+        setColorError(true);
+      }
+    }
+  };
+  
   const isAvailability = availability ? "true" : "false";
 
   const handlePriceChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    if (!value.startsWith("$")) {
-      setPrice(`$${value}`);
-    } else {
-      setPrice(value);
-    }
+    let value = e.target.value.trim();
+  
+    value = value.replace(/[^\d]/g, "");
+  
+    value = `$${value}`;
+  
+    setPrice(value);
+    setPriceError(value.trim() === "");
   };
+  
 
   const handleAvailabilityChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value === "true";
     setAvailability(value);
+  };
+
+  const handleSaveClick = () => {
+    if (color.trim() === "" || price.trim() === "") {
+      setColorError(color.trim() === "");
+      setPriceError(price.trim() === "");
+      return;
+    }
+
+    onSave();
   };
 
   return (
@@ -89,10 +118,16 @@ const EditCarForm: React.FC<IEditProps> = ({
             value={color}
             onChange={handleColorChange}
           />
+          {colorError && <span className="error-message">Color is required</span>}
         </div>
         <div>
           <label>Price:</label>
-          <input required value={price} onChange={handlePriceChange} />
+          <input
+            required
+            value={price}
+            onChange={handlePriceChange}
+          />
+          {priceError && <span className="error-message">Price is required</span>}
         </div>
         <div>
           <label>Availability</label>
@@ -107,7 +142,7 @@ const EditCarForm: React.FC<IEditProps> = ({
         </div>
       </div>
       <div className="buttons">
-        <button className="save-button" onClick={onSave}>
+        <button className="save-button" onClick={handleSaveClick}>
           Save
         </button>
         <button className="cancel-button" onClick={onClose}>

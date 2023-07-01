@@ -1,24 +1,5 @@
-.search-bar {
-  display: flex;
-  gap: 20px;
-  width: 70%;
-  margin: 0 auto;
-  margin-bottom: 10px;
-}
-.search-input {
-  width: 100%;
-  padding: 8px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-.add-new {
-  width: 120px;
-  padding: 4px;
-  border-radius: 10px;
-  background: white;
-  cursor: pointer;
-}
+
+
 
 .table-container {
   padding: 10px;
@@ -50,77 +31,6 @@
   background-color: #eaf2ff;
 }
 
-.action-button {
-  margin-right: 5px;
-}
-
-.action-button {
-  /* Your existing styles for the action buttons */
-}
-
-.action-button:hover {
-  cursor: pointer;
-}
-
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 120px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  z-index: 1;
-}
-
-.dropdown-content button {
-  display: block;
-  width: 100%;
-  padding: 8px;
-  text-align: left;
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-}
-
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-.dropdown-content button:hover {
-  background: rgba(0, 0, 0, 0.2);
-}
-
-.pagination-container {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #fff;
-  padding: 20px;
-}
-
-.pagination {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.pagination button {
-  margin: 0 5px;
-  padding: 5px 10px;
-  border: none;
-  background-color: #f2f2f2;
-  color: #333;
-  cursor: pointer;
-}
-
-.pagination button.active {
-  background-color: #333;
-  color: #fff;
-}
 
 /* Медиа-запрос для адаптивности */
 @media screen and (max-width: 600px) {

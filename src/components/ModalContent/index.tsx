@@ -69,7 +69,7 @@ const ModalContent: React.FC = () => {
   };
 
   const handlePriceUpdate = (newPrice: string) => {
-    dispatch(setPrice(newPrice));
+    dispatch(setPrice(`${newPrice}`));
   };
 
   const handleAvailabilityUpdate = (availability: boolean) => {
