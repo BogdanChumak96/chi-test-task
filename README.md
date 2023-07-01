@@ -34,13 +34,14 @@ If you need to install or update Node.js and npm, you can download the latest ve
 After ensuring the prerequisites are met, follow these steps:
 
 1. **Clone the repository:**
-    git clone https://github.com/your-username/car-list-app.git
+node --version
+git clone https://github.com/your-username/car-list-app.git
 2. **Navigate to the project directory:**
-    cd chi-test-task
+cd chi-test-task
 3. **Install the dependencies:**
-    npm install or yarn
+npm install or yarn
 4. **Start the application:**
-    npm dev or yarn dev
+npm dev or yarn dev
 
 
 ## Contributing
