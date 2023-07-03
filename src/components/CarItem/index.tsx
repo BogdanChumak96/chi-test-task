@@ -3,6 +3,9 @@ import { ICarItem } from "../../types/index";
 import { FiSettings } from "react-icons/fi";
 
 const CarItem: React.FC<ICarItem> = ({ car, handleOpenModal }) => {
+
+  const isAbleText = car.availability ? IsAble.AVAILABLE : IsAble.NOTAVAILABLE;
+  
   return (
     <tr key={car.id}>
       <td>{car.car}</td>
@@ -11,7 +14,7 @@ const CarItem: React.FC<ICarItem> = ({ car, handleOpenModal }) => {
       <td>{car.car_color}</td>
       <td>{car.car_model_year}</td>
       <td>{car.price}</td>
-      <td>{car.availability ? IsAble.AVAILABLE : IsAble.NOTAVAILABLE}</td>
+      <td>{isAbleText}</td>
       <td>
         <div className="dropdown">
           <div className="action-button">

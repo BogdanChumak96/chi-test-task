@@ -51,6 +51,10 @@ export interface ICarList {
   ) => void;
 }
 
+export interface IGetCarsResponse {
+  cars: ICar[];
+}
+
 export interface IDeleteCarFormProps {
   car: ICar | null;
   onClose: () => void;
@@ -107,4 +111,12 @@ export interface IRenderContent {
     car: ICar,
     action: ModalVariants.EDIT | ModalVariants.DELETE
   ) => void;
+}
+
+export interface IField {
+  name: string;
+  label: string;
+  value: string;
+  errorMessage: string;
+  options?: { value: string; label: string }[];
 }

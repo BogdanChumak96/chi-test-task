@@ -1,6 +1,3 @@
-
-
-
 .table-container {
   padding: 10px;
   margin: 30px;
@@ -31,8 +28,11 @@
   background-color: #eaf2ff;
 }
 
+button {
+  padding: 0;
+  margin: 0;
+}
 
-/* Медиа-запрос для адаптивности */
 @media screen and (max-width: 600px) {
   .table-container {
     overflow-x: scroll;

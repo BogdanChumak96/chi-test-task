@@ -1,16 +1,13 @@
+import { headerTitle } from "@utils/constants";
+
 const TableHeader: React.FC = () => {
+  const renderedHeaders = headerTitle.map((header, index) => (
+    <th key={index}>{header.label}</th>
+  ));
+
   return (
     <thead>
-      <tr>
-        <th>Company</th>
-        <th>Model</th>
-        <th>VIN</th>
-        <th>Color</th>
-        <th>Year</th>
-        <th>Price</th>
-        <th>Availability</th>
-        <th>Actions</th>
-      </tr>
+      <tr>{renderedHeaders}</tr>
     </thead>
   );
 };

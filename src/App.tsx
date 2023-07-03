@@ -19,7 +19,6 @@ import {
   carsSelectors,
   setCurrentPage,
   setOpenModal,
-  setCars,
   setSelectedCar,
   setModalAction,
   setSearchText,
@@ -27,6 +26,7 @@ import {
 } from "@store/carSlice";
 import { ICar } from "./types";
 import "./App.css";
+import { batch } from "react-redux";
 
 const App: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -42,12 +42,8 @@ const App: React.FC = () => {
   const selectPageSize = useAppSelector(carsSelectors.selectPageSize);
 
   // Fetch cars data
-  const { data, isLoading, isError, isSuccess } = useGetCarsQuery(
-    undefined,
-    {}
-  );
+  const { isLoading, isError, isSuccess } = useGetCarsQuery(undefined, {});
 
-  // Event handlers
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     dispatch(setSearchText(e.target.value));
     dispatch(setCurrentPage(1));
@@ -57,15 +53,19 @@ const App: React.FC = () => {
     car: ICar,
     action: ModalVariants.EDIT | ModalVariants.DELETE | ModalVariants.ADD
   ) => {
-    dispatch(setSelectedCar(car));
-    dispatch(setOpenModal(true));
-    dispatch(setModalAction(action));
+    batch(() => {
+      dispatch(setSelectedCar(car));
+      dispatch(setOpenModal(true));
+      dispatch(setModalAction(action));
+    });
   };
 
   const handleCloseModal = () => {
-    dispatch(setOpenModal(false));
-    dispatch(setSelectedCar(null));
-    dispatch(setModalAction(null));
+    batch(() => {
+      dispatch(setSelectedCar(null));
+      dispatch(setOpenModal(false));
+      dispatch(setModalAction(null));
+    });
   };
 
   // Debounce search text and update debounced search text in the store
@@ -75,7 +75,7 @@ const App: React.FC = () => {
     }, 500);
     debouncedSearch();
     dispatch(setCurrentPage(1));
-  }, [selectSearchText, dispatch]);
+  }, [selectSearchText]);
 
   const handlePageChange = (page: number) => {
     dispatch(setCurrentPage(page));
@@ -122,28 +122,23 @@ const App: React.FC = () => {
     return <ErrorLoading />;
   }
 
-  // Render the main component
   return (
     <div className="table-container">
-      {/* Render header component with search functionality */}
       <Header
         searchText={selectSearchText}
         handleSearchChange={handleSearchChange}
         handleOpenModal={handleOpenModal}
       />
 
-      {/* Render modal component based on modal state */}
       <Modal open={selectOpenModal} onClose={handleCloseModal}>
         <ModalContent />
       </Modal>
 
-      {/* Render table with car data */}
       <table>
         <TableHeader />
         <tbody>{carsContainer}</tbody>
       </table>
 
-      {/* Render pagination component */}
       {paginationContainer}
     </div>
   );

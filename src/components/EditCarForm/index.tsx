@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import "./styles.css";
 import { IEditProps } from "../../types";
 import { IsAble } from "@utils/constants";
@@ -14,52 +14,96 @@ const EditCarForm: React.FC<IEditProps> = ({
   availability,
   price,
 }) => {
-  const [colorError, setColorError] = useState(false);
-  const [priceError, setPriceError] = useState(false);
+  const [colorError, setColorError] = useState("");
+  const [priceError, setPriceError] = useState("");
 
   const handleColorChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const colorValue = e.target.value.trim();
-  
-    if (colorValue === "") {
-      setColor("");
-      setColorError(false);
-    } else {
-      const onlyLettersRegex = /^[a-zA-Z]+$/;
-      const isValidColor = onlyLettersRegex.test(colorValue);
-  
-      if (isValidColor) {
-        const capitalizedColor = colorValue.charAt(0).toUpperCase() + colorValue.slice(1);
-        setColor(capitalizedColor);
-        setColorError(false);
-      } else {
-        setColorError(true);
-      }
-    }
+    const colorValue = e.target.value;
+    const capitalizedColor =
+      colorValue.charAt(0).toUpperCase() + colorValue.slice(1);
+    setColor(capitalizedColor);
+    setColorError(""); // Clear color error message
   };
-  
+
   const isAvailability = availability ? "true" : "false";
 
   const handlePriceChange = (e: ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value.trim();
-  
-    value = value.replace(/[^\d]/g, "");
-  
-    value = `$${value}`;
-  
-    setPrice(value);
-    setPriceError(value.trim() === "");
+    const value = e.target.value;
+    if (!value.startsWith("$")) {
+      setPrice(`$${value}`);
+    } else {
+      setPrice(value);
+    }
+    setPriceError(""); // Clear price error message
   };
-  
 
   const handleAvailabilityChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value === "true";
     setAvailability(value);
   };
 
-  const handleSaveClick = () => {
-    if (color.trim() === "" || price.trim() === "") {
-      setColorError(color.trim() === "");
-      setPriceError(price.trim() === "");
+  const validateColor = () => {
+    if (!color.trim()) {
+      setColorError("Please enter the color");
+    } else {
+      setColorError("");
+    }
+  };
+
+  const validatePrice = () => {
+    if (!price.trim()) {
+      setPriceError("Please enter the price");
+    } else {
+      setPriceError("");
+    }
+  };
+
+  const inputElements = [
+    { label: "Company:", value: car.car, editable: false },
+    { label: "Model:", value: car.car_model, editable: false },
+    { label: "VIN:", value: car.car_vin, editable: false },
+    { label: "Year:", value: car.car_model_year.toString(), editable: false },
+    {
+      label: "Color:",
+      value: color,
+      onChange: handleColorChange,
+      onBlur: validateColor,
+      editable: true,
+    },
+    {
+      label: "Price:",
+      value: price,
+      onChange: handlePriceChange,
+      onBlur: validatePrice,
+      editable: true,
+    },
+  ];
+
+  const renderedFields = inputElements.map((inputElement, index) => (
+    <div key={index}>
+      <label>{inputElement.label}</label>
+      <input
+        type="text"
+        value={inputElement.value}
+        onChange={inputElement.onChange}
+        onBlur={inputElement.onBlur}
+        disabled={!inputElement.editable}
+        className={!inputElement.editable ? "disabled" : ""}
+      />
+      {inputElement.label === "Color:" && colorError && (
+        <span className="error-message">{colorError}</span>
+      )}
+      {inputElement.label === "Price:" && priceError && (
+        <span className="error-message">{priceError}</span>
+      )}
+    </div>
+  ));
+
+  const handleSave = () => {
+    validateColor();
+    validatePrice();
+
+    if (colorError || priceError || !color || !price) {
       return;
     }
 
@@ -70,65 +114,7 @@ const EditCarForm: React.FC<IEditProps> = ({
     <div className="edit-modal">
       <h2>Edit Car</h2>
       <div className="form">
-        <div>
-          <label>Company:</label>
-          <input
-            type="text"
-            value={car.car}
-            placeholder="Not Editable"
-            disabled
-            className="disabled"
-          />
-        </div>
-        <div>
-          <label>Model:</label>
-          <input
-            type="text"
-            value={car.car_model}
-            placeholder="Not Editable"
-            disabled
-            className="disabled"
-          />
-        </div>
-        <div>
-          <label>VIN:</label>
-          <input
-            type="text"
-            value={car.car_vin}
-            placeholder="Not Editable"
-            disabled
-            className="disabled"
-          />
-        </div>
-        <div>
-          <label>Year:</label>
-          <input
-            type="number"
-            value={car.car_model_year}
-            placeholder="Not Editable"
-            disabled
-            className="disabled"
-          />
-        </div>
-        <div>
-          <label>Color:</label>
-          <input
-            required
-            type="text"
-            value={color}
-            onChange={handleColorChange}
-          />
-          {colorError && <span className="error-message">Color is required</span>}
-        </div>
-        <div>
-          <label>Price:</label>
-          <input
-            required
-            value={price}
-            onChange={handlePriceChange}
-          />
-          {priceError && <span className="error-message">Price is required</span>}
-        </div>
+        {renderedFields}
         <div>
           <label>Availability</label>
           <select
@@ -142,7 +128,7 @@ const EditCarForm: React.FC<IEditProps> = ({
         </div>
       </div>
       <div className="buttons">
-        <button className="save-button" onClick={handleSaveClick}>
+        <button className="save-button" onClick={handleSave}>
           Save
         </button>
         <button className="cancel-button" onClick={onClose}>
