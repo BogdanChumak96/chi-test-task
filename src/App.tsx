@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, ChangeEvent } from "react";
 import { useGetCarsQuery } from "@store/api";
 import { debounce, filterCars } from "@utils/helpers";
@@ -76,19 +77,11 @@ const App: React.FC = () => {
     dispatch(setCurrentPage(1));
   }, [selectSearchText, dispatch]);
 
-  // Update cars data in the store when successful response is received
-  useEffect(() => {
-    if (isSuccess) {
-      dispatch(setCars(data?.cars || []));
-    }
-  }, [isSuccess, data?.cars, dispatch]);
-
-  // Filter cars based on search text
-
   const handlePageChange = (page: number) => {
     dispatch(setCurrentPage(page));
   };
 
+  // Filter cars based on search text
   const filteredCars = filterCars(selectAllCars, selectDebouncedSearchText);
   const totalPages = Math.ceil(filteredCars.length / selectPageSize);
 

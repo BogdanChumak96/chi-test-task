@@ -1,22 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { ICar } from "../../types";
+import { ICar, carsState } from "../../types";
 import { RootState } from "..";
-
-export interface carsState {
-  currentPage: number;
-  openModal: boolean;
-  selectedCar: ICar | null;
-  modalAction: "edit" | "delete" | "add" | null;
-  value: number;
-  cars: ICar[];
-  color: string;
-  price: string;
-  availability: boolean;
-  searchText: string;
-  debouncedSearchText: string;
-  pageSize: number;
-}
+import { carsApi } from "@store/api";
 
 const initialState: carsState = {
   currentPage: 1,
@@ -70,6 +56,14 @@ export const carsSlice = createSlice({
     setDebouncedSearchText: (state, action) => {
       state.debouncedSearchText = action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addMatcher(
+      carsApi.endpoints.getCars.matchFulfilled,
+      (state, action) => {
+        state.cars = action.payload.cars;
+      }
+    );
   },
 });
 
