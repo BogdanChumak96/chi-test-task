@@ -1,7 +1,17 @@
 import React, { ChangeEvent, useId, useState } from "react";
 import "./styles.css";
 import { IsAble } from "@utils/constants";
-import { AddCarFormProps, IField } from "../../types";
+import { AddCarFormProps } from "../../types";
+
+interface ErrorMessages {
+  company: string;
+  model: string;
+  vin: string;
+  year: string;
+  color: string;
+  price: string;
+  availability: string;
+}
 
 const AddCarForm: React.FC<AddCarFormProps> = ({ onClose, onSave }) => {
   const [formData, setFormData] = useState({
@@ -10,11 +20,11 @@ const AddCarForm: React.FC<AddCarFormProps> = ({ onClose, onSave }) => {
     vin: "",
     year: "",
     color: "",
-    price: "",
+    price: 0,
     availability: "true",
   });
 
-  const [errorMessages, setErrorMessages] = useState({
+  const [errorMessages, setErrorMessages] = useState<ErrorMessages>({
     company: "",
     model: "",
     vin: "",
@@ -25,55 +35,6 @@ const AddCarForm: React.FC<AddCarFormProps> = ({ onClose, onSave }) => {
   });
 
   const id = useId();
-
-  const fields: IField[] = [
-    {
-      name: "company",
-      label: "Company",
-      value: formData.company,
-      errorMessage: errorMessages.company,
-    },
-    {
-      name: "model",
-      label: "Model",
-      value: formData.model,
-      errorMessage: errorMessages.model,
-    },
-    {
-      name: "vin",
-      label: "VIN",
-      value: formData.vin,
-      errorMessage: errorMessages.vin,
-    },
-    {
-      name: "year",
-      label: "Year",
-      value: formData.year,
-      errorMessage: errorMessages.year,
-    },
-    {
-      name: "color",
-      label: "Color",
-      value: formData.color,
-      errorMessage: errorMessages.color,
-    },
-    {
-      name: "price",
-      label: "Price",
-      value: formData.price,
-      errorMessage: errorMessages.price,
-    },
-    {
-      name: "availability",
-      label: "Availability",
-      value: formData.availability,
-      errorMessage: errorMessages.availability,
-      options: [
-        { value: "true", label: IsAble.AVAILABLE },
-        { value: "false", label: IsAble.NOTAVAILABLE },
-      ],
-    },
-  ];
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -86,8 +47,8 @@ const AddCarForm: React.FC<AddCarFormProps> = ({ onClose, onSave }) => {
     }));
   };
 
-  const handleSave = () => {
-    const newErrorMessages = {
+  const validateForm = () => {
+    const newErrorMessages: ErrorMessages = {
       company: formData.company.trim() === "" ? "Please enter the company" : "",
       model: formData.model.trim() === "" ? "Please enter the model" : "",
       vin:
@@ -105,46 +66,104 @@ const AddCarForm: React.FC<AddCarFormProps> = ({ onClose, onSave }) => {
       color:
         formData.color.trim() === ""
           ? "Please enter the color"
-          : /^[a-zA-Z]+$/.test(formData.color)
-          ? ""
-          : "Color must consist of letters only",
+          : !/^[a-zA-Z]+$/.test(formData.color)
+          ? "Color must consist of letters only"
+          : "",
       price:
-        formData.price.trim() === ""
+        formData.price === 0
           ? "Please enter the price"
-          : Number(formData.price) <= 0
+          : formData.price <= 0
           ? "Price must be greater than 0"
           : "",
       availability:
-        formData.availability.trim() === "true" ||
-        formData.availability.trim() === "false"
-          ? ""
-          : "Please select the availability",
+        formData.availability.trim() !== "true" &&
+        formData.availability.trim() !== "false"
+          ? "Please select the availability"
+          : "",
     };
 
     setErrorMessages(newErrorMessages);
 
-    if (Object.values(newErrorMessages).some((msg) => msg !== "")) {
+    return Object.values(newErrorMessages).every((msg) => msg === "");
+  };
+
+  const handleSave = () => {
+    if (!validateForm()) {
       return;
     }
 
     onSave({
-      ...formData,
+      car: formData.company,
+      car_model: formData.model,
+      car_model_year: formData.year,
+      car_color: formData.color,
+      price: `$${formData.price}`,
+      car_vin: formData.vin,
+      availability: formData.availability,
       id,
     });
-
     onClose();
   };
 
-  const renderedFields = fields.map((field) => (
-    <div key={field.name}>
-      <label>{field.label}</label>
-      {field.options ? (
+  const inputs = [
+    {
+      label: "Company",
+      name: "company",
+      value: formData.company,
+      errorMessage: errorMessages.company,
+    },
+    {
+      label: "Model",
+      name: "model",
+      value: formData.model,
+      errorMessage: errorMessages.model,
+    },
+    {
+      label: "VIN",
+      name: "vin",
+      value: formData.vin,
+      errorMessage: errorMessages.vin,
+    },
+    {
+      label: "Year",
+      name: "year",
+      value: formData.year,
+      errorMessage: errorMessages.year,
+    },
+    {
+      label: "Color",
+      name: "color",
+      value: formData.color,
+      errorMessage: errorMessages.color,
+    },
+    {
+      label: "Price",
+      name: "price",
+      value: formData.price.toString(),
+      errorMessage: errorMessages.price,
+    },
+    {
+      label: "Availability",
+      name: "availability",
+      value: formData.availability,
+      errorMessage: errorMessages.availability,
+      options: [
+        { value: "true", label: IsAble.AVAILABLE },
+        { value: "false", label: IsAble.NOTAVAILABLE },
+      ],
+    },
+  ];
+
+  const renderedInputs = inputs.map((input) => (
+    <div key={input.name}>
+      <label>{input.label}</label>
+      {input.name === "availability" ? (
         <select
-          name={field.name}
-          value={field.value}
+          name={input.name}
+          value={input.value}
           onChange={handleInputChange}
         >
-          {field.options.map((option) => (
+          {input.options?.map((option) => (
             <option key={option.value} value={option.value}>
               {option.label}
             </option>
@@ -153,13 +172,13 @@ const AddCarForm: React.FC<AddCarFormProps> = ({ onClose, onSave }) => {
       ) : (
         <input
           type="text"
-          name={field.name}
-          value={field.value}
+          name={input.name}
+          value={input.value}
           onChange={handleInputChange}
         />
       )}
-      {field.errorMessage && (
-        <span className="error-message">{field.errorMessage}</span>
+      {input.errorMessage && (
+        <span className="error-message">{input.errorMessage}</span>
       )}
     </div>
   ));
@@ -167,7 +186,7 @@ const AddCarForm: React.FC<AddCarFormProps> = ({ onClose, onSave }) => {
   return (
     <div className="add-car-form">
       <h2>Add Car</h2>
-      <div className="form">{renderedFields}</div>
+      <div className="form">{renderedInputs}</div>
       <div className="buttons">
         <button className="save-button" onClick={handleSave}>
           Save
