@@ -1,5 +1,5 @@
 import React from "react";
-import "./styles.css";
+import styles from "./styles.module.scss";
 import { ICar } from "../../types";
 
 export interface IDeleteCarFormProps {
@@ -18,14 +18,14 @@ const DeleteCarForm: React.FC<IDeleteCarFormProps> = ({
   };
 
   return (
-    <div className="delete-modal">
+    <div className={styles.delete_modal}>
       <h2>Delete Car</h2>
       <p>Are you sure you want to delete this car?</p>
-      <div className="buttons">
-        <button className="delete-button" onClick={handleDelete}>
+      <div className={styles.buttons}>
+        <button className={styles.delete_button} onClick={handleDelete}>
           Delete
         </button>
-        <button className="cancel-button" onClick={onClose}>
+        <button className={styles.cancel_button} onClick={onClose}>
           Cancel
         </button>
       </div>

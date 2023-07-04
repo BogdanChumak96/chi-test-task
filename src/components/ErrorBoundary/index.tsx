@@ -1,6 +1,6 @@
 import { ErrorBoundaryProps, ErrorBoundaryState } from "../../types";
 import { Component, ErrorInfo } from "react";
-import "./style.css";
+import styles from "./styles.module.scss";
 
 interface CustomErrorBoundaryState extends ErrorBoundaryState {
   error: Error | null;
@@ -24,7 +24,7 @@ class ErrorBoundary extends Component<
   render() {
     if (this.state.hasError) {
       return (
-        <div className="error-message">
+        <div className={styles.error_message}>
           Error occurred: {this.state.error && this.state.error.toString()}
         </div>
       );

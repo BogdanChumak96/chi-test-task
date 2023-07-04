@@ -2,6 +2,7 @@ import React from "react";
 import { IsAble, ModalVariants } from "@utils/constants";
 import { ICarItem } from "../../types/index";
 import { FiSettings } from "react-icons/fi";
+import styles from "./styles.module.scss";
 
 const CarItem: React.FC<ICarItem> = React.memo(({ car, handleOpenModal }) => {
   const isAbleText = car.availability ? IsAble.AVAILABLE : IsAble.NOTAVAILABLE;
@@ -16,11 +17,11 @@ const CarItem: React.FC<ICarItem> = React.memo(({ car, handleOpenModal }) => {
       <td>{car.price}</td>
       <td>{isAbleText}</td>
       <td>
-        <div className="dropdown">
-          <div className="action-button">
+        <div className={styles.dropdown}>
+          <div className={styles.action_button}>
             <FiSettings />
           </div>
-          <div className="dropdown-content">
+          <div className={styles.dropdown_content}>
             <button onClick={() => handleOpenModal(car, ModalVariants.EDIT)}>
               Edit
             </button>

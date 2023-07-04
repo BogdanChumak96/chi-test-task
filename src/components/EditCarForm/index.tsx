@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useState } from "react";
-import "./styles.css";
+import styles from "./styles.module.scss";
 import { IEditProps } from "../../types";
 import { IsAble } from "@utils/constants";
 
@@ -22,7 +22,7 @@ const EditCarForm: React.FC<IEditProps> = ({
     const capitalizedColor =
       colorValue.charAt(0).toUpperCase() + colorValue.slice(1);
     setColor(capitalizedColor);
-    setColorError(""); 
+    setColorError("");
   };
 
   const isAvailability = availability ? "true" : "false";
@@ -34,7 +34,7 @@ const EditCarForm: React.FC<IEditProps> = ({
     } else {
       setPrice(value);
     }
-    setPriceError(""); // Clear price error message
+    setPriceError("");
   };
 
   const handleAvailabilityChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -91,10 +91,10 @@ const EditCarForm: React.FC<IEditProps> = ({
         className={!inputElement.editable ? "disabled" : ""}
       />
       {inputElement.label === "Color:" && colorError && (
-        <span className="error-message">{colorError}</span>
+        <span className={styles.error_message}>{colorError}</span>
       )}
       {inputElement.label === "Price:" && priceError && (
-        <span className="error-message">{priceError}</span>
+        <span className={styles.error_message}>{priceError}</span>
       )}
     </div>
   ));
@@ -111,9 +111,9 @@ const EditCarForm: React.FC<IEditProps> = ({
   };
 
   return (
-    <div className="edit-modal">
+    <div className={styles.edit_modal}>
       <h2>Edit Car</h2>
-      <div className="form">
+      <div className={styles.form}>
         {renderedFields}
         <div>
           <label>Availability</label>
@@ -127,11 +127,11 @@ const EditCarForm: React.FC<IEditProps> = ({
           </select>
         </div>
       </div>
-      <div className="buttons">
-        <button className="save-button" onClick={handleSave}>
+      <div className={styles.buttons}>
+        <button className={styles.save_button} onClick={handleSave}>
           Save
         </button>
-        <button className="cancel-button" onClick={onClose}>
+        <button className={styles.cancel_button} onClick={onClose}>
           Cancel
         </button>
       </div>

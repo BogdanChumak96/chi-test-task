@@ -1,4 +1,4 @@
-
+import styles from "./styles.module.scss";
 export interface InputData {
   label: string;
   name: string;
@@ -17,7 +17,10 @@ interface RenderedInputsProps {
   ) => void;
 }
 
-const RenderedInputs: React.FC<RenderedInputsProps> = ({ inputs, handleInputChange }) => {
+const RenderedInputs: React.FC<RenderedInputsProps> = ({
+  inputs,
+  handleInputChange,
+}) => {
   return (
     <>
       {inputs.map((input) => (
@@ -44,7 +47,7 @@ const RenderedInputs: React.FC<RenderedInputsProps> = ({ inputs, handleInputChan
             />
           )}
           {input.errorMessage && (
-            <span className="error-message">{input.errorMessage}</span>
+            <span className={styles.error_message}>{input.errorMessage}</span>
           )}
         </div>
       ))}

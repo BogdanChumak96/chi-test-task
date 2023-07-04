@@ -1,10 +1,10 @@
 import { ChangeEvent, useId, useState } from "react";
-import "./styles.css";
 import * as Yup from "yup";
 import { schema } from "./schema";
 import { getInputs } from "@utils/helpers";
 import { ErrorMessages } from "../../types";
 import RenderedInputs from "@components/RenderedAddInputs";
+import styles from "./styles.module.scss";
 
 export interface AddCarFormProps {
   onClose: () => void;
@@ -89,16 +89,16 @@ const AddCarForm: React.FC<AddCarFormProps> = ({ onClose, onSave }) => {
   const inputs = getInputs(formData, errorMessages);
 
   return (
-    <div className="add-car-form">
+    <div className={styles.add_car_form}>
       <h2>Add Car</h2>
-      <div className="form">
+      <div className={styles.form}>
         <RenderedInputs inputs={inputs} handleInputChange={handleInputChange} />
       </div>
-      <div className="buttons">
-        <button className="save-button" onClick={handleSave}>
+      <div className={styles.buttons}>
+        <button className={styles.save_button} onClick={handleSave}>
           Save
         </button>
-        <button className="cancel-button" onClick={onClose}>
+        <button className={styles.cancel_button} onClick={onClose}>
           Cancel
         </button>
       </div>

@@ -1,6 +1,5 @@
 import CarItem from "@components/CarItem";
 import { ICar, ICarList } from "../../types/index";
-import "./styles.css";
 import NoResults from "@components/NoResults";
 
 const CarsList: React.FC<ICarList> = ({ cars, handleOpenModal }) => {

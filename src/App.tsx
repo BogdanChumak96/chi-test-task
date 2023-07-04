@@ -25,7 +25,7 @@ import {
   setDebouncedSearchText,
 } from "@store/carSlice";
 import { ICar } from "./types";
-import "./App.css";
+import "./App.scss";
 import { batch } from "react-redux";
 
 const App: React.FC = () => {

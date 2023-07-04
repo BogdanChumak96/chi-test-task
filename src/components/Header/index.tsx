@@ -1,5 +1,5 @@
 import { IHeader } from "../../types";
-import "./styles.css";
+import styles from "./styles.module.scss";
 import AddNewCarButton from "@components/AddNewButton";
 
 const Header: React.FC<IHeader> = ({
@@ -8,13 +8,13 @@ const Header: React.FC<IHeader> = ({
   handleOpenModal,
 }) => {
   return (
-    <div className="search-bar">
+    <div className={styles.search_bar}>
       <input
         type="text"
         placeholder="Search..."
         value={searchText}
         onChange={handleSearchChange}
-        className="search-input"
+        className={styles.search_input}
       />
       <AddNewCarButton handleOpenModal={handleOpenModal} title={"Add New"} />
     </div>

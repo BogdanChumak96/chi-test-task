@@ -13,3 +13,4 @@ export { default as NoResults } from "./NoResults";
 export { default as Pagination } from "./Pagination";
 export { default as RenderedCars } from "./RenderedCars";
 export { default as TableHeader } from "./TableHeader";
+export { default as RenderedAddInputs } from "./RenderedAddInputs";

@@ -1,0 +1,41 @@
+.action_button {
+  margin-right: 5px;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+
+  .dropdown_content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 120px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+
+    button {
+      display: block;
+      width: 100%;
+      padding: 8px;
+      text-align: left;
+      border: none;
+      background-color: transparent;
+      cursor: pointer;
+
+      &:hover {
+        background: rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
+
+  &:hover {
+    .dropdown_content {
+      display: block;
+    }
+  }
+}

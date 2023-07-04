@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { IModalProps } from "../../types";
-import "./styles.css";
+import styles from "./styles.module.scss";
 
 const Modal: React.FC<IModalProps> = ({ open, onClose, children }) => {
   const modalRef = useRef<HTMLDivElement>(null);
@@ -29,8 +29,8 @@ const Modal: React.FC<IModalProps> = ({ open, onClose, children }) => {
   }
 
   return (
-    <div className="modal">
-      <div className="modal-content" ref={modalRef}>
+    <div className={styles.modal}>
+      <div className={styles.modal_content} ref={modalRef}>
         {children}
       </div>
     </div>
