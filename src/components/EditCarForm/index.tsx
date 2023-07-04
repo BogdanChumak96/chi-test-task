@@ -22,7 +22,7 @@ const EditCarForm: React.FC<IEditProps> = ({
     const capitalizedColor =
       colorValue.charAt(0).toUpperCase() + colorValue.slice(1);
     setColor(capitalizedColor);
-    setColorError(""); // Clear color error message
+    setColorError(""); 
   };
 
   const isAvailability = availability ? "true" : "false";

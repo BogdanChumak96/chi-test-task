@@ -61,6 +61,16 @@ export interface IDeleteCarFormProps {
   onDelete: () => void;
 }
 
+export interface ErrorMessages {
+  company: string;
+  model: string;
+  vin: string;
+  year: string;
+  color: string;
+  price: string;
+  availability: string;
+}
+
 export interface AddCarFormProps {
   onClose: () => void;
   onSave: (car: any) => void;

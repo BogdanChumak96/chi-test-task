@@ -17,7 +17,8 @@
     "react-hook-form": "^7.45.1",
     "react-icons": "^4.10.1",
     "react-redux": "^8.1.1",
-    "redux-persist": "^6.0.0"
+    "redux-persist": "^6.0.0",
+    "yup": "^1.2.0"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.22.5",

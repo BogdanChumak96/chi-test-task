@@ -1,6 +1,12 @@
 import React from "react";
 import "./styles.css";
-import { IDeleteCarFormProps } from "../../types";
+import { ICar } from "../../types";
+
+export interface IDeleteCarFormProps {
+  car: ICar | null;
+  onClose: () => void;
+  onDelete: () => void;
+}
 
 const DeleteCarForm: React.FC<IDeleteCarFormProps> = ({
   onClose,

@@ -1,6 +1,7 @@
 import { ModalVariants } from "@utils/constants";
 import { IHeader } from "../../types";
 import "./styles.css";
+import AddNewCarButton from "@components/AddNewButton";
 
 const Header: React.FC<IHeader> = ({
   searchText,
@@ -16,12 +17,7 @@ const Header: React.FC<IHeader> = ({
         onChange={handleSearchChange}
         className="search-input"
       />
-      <button
-        onClick={() => handleOpenModal(null, ModalVariants.ADD)}
-        className="add-new"
-      >
-        Add new car
-      </button>
+      <AddNewCarButton handleOpenModal={handleOpenModal} title={"Add New"} />
     </div>
   );
 };

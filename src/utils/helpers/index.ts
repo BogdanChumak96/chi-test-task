@@ -1,4 +1,5 @@
-import { ICar } from "./../../types/index";
+import { IsAble } from "@utils/constants";
+import {  ErrorMessages, ICar } from "./../../types/index";
 
 export const filterCars = (
   cars: ICar[] | undefined,
@@ -36,4 +37,55 @@ export const debounce = <T extends (...args: any[]) => any>(
       func.apply(this, args);
     }, delay);
   };
+};
+
+export const getInputs = (formData: any, errorMessages: ErrorMessages) => {
+  return [
+    {
+      label: "Company",
+      name: "company",
+      value: formData.company,
+      errorMessage: errorMessages.company,
+    },
+    {
+      label: "Model",
+      name: "model",
+      value: formData.model,
+      errorMessage: errorMessages.model,
+    },
+    {
+      label: "VIN",
+      name: "vin",
+      value: formData.vin,
+      errorMessage: errorMessages.vin,
+    },
+    {
+      label: "Year",
+      name: "year",
+      value: formData.year,
+      errorMessage: errorMessages.year,
+    },
+    {
+      label: "Color",
+      name: "color",
+      value: formData.color,
+      errorMessage: errorMessages.color,
+    },
+    {
+      label: "Price",
+      name: "price",
+      value: formData.price.toString(),
+      errorMessage: errorMessages.price,
+    },
+    {
+      label: "Availability",
+      name: "availability",
+      value: formData.availability,
+      errorMessage: errorMessages.availability,
+      options: [
+        { value: "true", label: IsAble.AVAILABLE },
+        { value: "false", label: IsAble.NOTAVAILABLE },
+      ],
+    },
+  ];
 };

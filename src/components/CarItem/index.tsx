@@ -1,11 +1,11 @@
+import React from "react";
 import { IsAble, ModalVariants } from "@utils/constants";
 import { ICarItem } from "../../types/index";
 import { FiSettings } from "react-icons/fi";
 
-const CarItem: React.FC<ICarItem> = ({ car, handleOpenModal }) => {
-
+const CarItem: React.FC<ICarItem> = React.memo(({ car, handleOpenModal }) => {
   const isAbleText = car.availability ? IsAble.AVAILABLE : IsAble.NOTAVAILABLE;
-  
+
   return (
     <tr key={car.id}>
       <td>{car.car}</td>
@@ -32,6 +32,6 @@ const CarItem: React.FC<ICarItem> = ({ car, handleOpenModal }) => {
       </td>
     </tr>
   );
-};
+});
 
 export default CarItem;
