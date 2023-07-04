@@ -1,4 +1,3 @@
-import { ModalVariants } from "@utils/constants";
 import { IHeader } from "../../types";
 import "./styles.css";
 import AddNewCarButton from "@components/AddNewButton";
