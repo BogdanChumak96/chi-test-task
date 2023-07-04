@@ -2,6 +2,7 @@ import React, { ChangeEvent, useState } from "react";
 import styles from "./styles.module.scss";
 import { IEditProps } from "../../types";
 import { IsAble } from "@utils/constants";
+import { schema } from "./schema";
 
 const EditCarForm: React.FC<IEditProps> = ({
   car,
@@ -14,15 +15,16 @@ const EditCarForm: React.FC<IEditProps> = ({
   availability,
   price,
 }) => {
-  const [colorError, setColorError] = useState("");
-  const [priceError, setPriceError] = useState("");
+  const [errors, setErrors] = useState<{ [key: string]: string }>({
+    color: "",
+    price: "",
+  });
 
   const handleColorChange = (e: ChangeEvent<HTMLInputElement>) => {
     const colorValue = e.target.value;
     const capitalizedColor =
       colorValue.charAt(0).toUpperCase() + colorValue.slice(1);
     setColor(capitalizedColor);
-    setColorError("");
   };
 
   const isAvailability = availability ? "true" : "false";
@@ -34,7 +36,6 @@ const EditCarForm: React.FC<IEditProps> = ({
     } else {
       setPrice(value);
     }
-    setPriceError("");
   };
 
   const handleAvailabilityChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -42,19 +43,15 @@ const EditCarForm: React.FC<IEditProps> = ({
     setAvailability(value);
   };
 
-  const validateColor = () => {
-    if (!color.trim()) {
-      setColorError("Please enter the color");
-    } else {
-      setColorError("");
-    }
-  };
-
-  const validatePrice = () => {
-    if (!price.trim()) {
-      setPriceError("Please enter the price");
-    } else {
-      setPriceError("");
+  const validateField = async (fieldName: string, value: string) => {
+    try {
+      await schema.validateAt(fieldName, { [fieldName]: value });
+      setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: "" }));
+    } catch (error: any) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [fieldName]: error.message,
+      }));
     }
   };
 
@@ -67,14 +64,14 @@ const EditCarForm: React.FC<IEditProps> = ({
       label: "Color:",
       value: color,
       onChange: handleColorChange,
-      onBlur: validateColor,
+      onBlur: () => validateField("color", color),
       editable: true,
     },
     {
       label: "Price:",
       value: price,
       onChange: handlePriceChange,
-      onBlur: validatePrice,
+      onBlur: () => validateField("price", price),
       editable: true,
     },
   ];
@@ -90,20 +87,20 @@ const EditCarForm: React.FC<IEditProps> = ({
         disabled={!inputElement.editable}
         className={!inputElement.editable ? "disabled" : ""}
       />
-      {inputElement.label === "Color:" && colorError && (
-        <span className={styles.error_message}>{colorError}</span>
+      {inputElement.label === "Color:" && errors.color && (
+        <span className={styles.error_message}>{errors.color}</span>
       )}
-      {inputElement.label === "Price:" && priceError && (
-        <span className={styles.error_message}>{priceError}</span>
+      {inputElement.label === "Price:" && errors.price && (
+        <span className={styles.error_message}>{errors.price}</span>
       )}
     </div>
   ));
 
   const handleSave = () => {
-    validateColor();
-    validatePrice();
+    validateField("color", color);
+    validateField("price", price);
 
-    if (colorError || priceError || !color || !price) {
+    if (errors.color || errors.price || !color || !price) {
       return;
     }
 
