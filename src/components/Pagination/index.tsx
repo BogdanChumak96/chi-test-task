@@ -1,6 +1,6 @@
 import { isActiveButton } from "@utils/constants";
 import { IPagination } from "../../types";
-import "./styles.css";
+import "./styles.scss";
 
 const Pagination: React.FC<IPagination> = ({
   totalPages,
