@@ -1,6 +1,6 @@
 import { isActiveButton } from "@utils/constants";
 import { IPagination } from "../../types";
-import "./style.scss";
+import "./styles.css";
 
 const Pagination: React.FC<IPagination> = ({
   totalPages,
@@ -108,6 +108,7 @@ const Pagination: React.FC<IPagination> = ({
 
     return pageButtons;
   };
+
   const renderedButtons = renderPageButtons();
 
   return <div className="pagination">{renderedButtons}</div>;
