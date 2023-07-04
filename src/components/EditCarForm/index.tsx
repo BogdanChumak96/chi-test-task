@@ -31,7 +31,9 @@ const EditCarForm: React.FC<IEditProps> = ({
 
   const handlePriceChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    if (!value.startsWith("$")) {
+    if (!value || value === "$") {
+      setPrice("");
+    } else if (!value.startsWith("$")) {
       setPrice(`$${value}`);
     } else {
       setPrice(value);
@@ -100,7 +102,7 @@ const EditCarForm: React.FC<IEditProps> = ({
     validateField("color", color);
     validateField("price", price);
 
-    if (errors.color || errors.price || !color || !price) {
+    if (errors.color || errors.price || !color || !price || price === "$") {
       return;
     }
 
