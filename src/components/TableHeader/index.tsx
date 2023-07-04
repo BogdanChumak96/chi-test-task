@@ -1,6 +1,8 @@
-import { headerTitle } from "@utils/constants";
+import React, { memo } from 'react';
+import { headerTitle } from '@utils/constants';
 
 const TableHeader: React.FC = () => {
+
   const renderedHeaders = headerTitle.map((header, index) => (
     <th key={index}>{header.label}</th>
   ));
@@ -12,4 +14,4 @@ const TableHeader: React.FC = () => {
   );
 };
 
-export default TableHeader;
+export default memo(TableHeader);
